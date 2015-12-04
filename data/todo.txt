@@ -1,0 +1,10 @@
+John
+- restaurant/user/review objects
+- k-means
+- add commands
+
+Tim
+- Query parsing (ANTLR)
+- Building DB from file
+- least squares
+- generate test data set
