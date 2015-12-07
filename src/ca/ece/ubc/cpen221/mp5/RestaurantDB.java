@@ -1,10 +1,12 @@
 package ca.ece.ubc.cpen221.mp5;
 
-import java.util.Collections;
 import java.util.HashMap;
 import java.util.HashSet;
-import java.util.Iterator;
+import java.io.FileReader;
+import java.io.BufferedReader;
 import java.util.Map;
+import java.util.Map.Entry;
+import java.util.Random;
 import java.util.Set;
 
 // TODO: This class represents the Restaurant Database.
@@ -31,13 +33,49 @@ public class RestaurantDB {
      *            the filename for the users
      */
 
-    private Map<Restaurant, Set<Review>> restaurantMap;
-    private Map<User, Set<Review>> userMap;
+    private Map<Restaurant, HashSet<Review>> restaurantMap;
+    private Map<User, HashSet<Review>> userMap;
 
-    public RestaurantDB(String restaurantJSONfilename,
+    public RestaurantDB(String restaurantsJSONfilename,
             String reviewsJSONfilename, String usersJSONfilename) {
-        // TODO: Implement this method
-        // It's multithreaded
+
+        restaurantMap = new HashMap<Restaurant, HashSet<Review>>();
+        userMap = new HashMap<User, HashSet<Review>>();
+
+        String line = null;
+
+        try {
+            BufferedReader bufferedReader = new BufferedReader(
+                    new FileReader(restaurantsJSONfilename));
+            while ((line = bufferedReader.readLine()) != null) {
+                System.out.println(addRestaurant(line));
+            }
+            bufferedReader.close();
+        } catch (Exception e) {
+            e.printStackTrace();
+        }
+
+        try {
+            BufferedReader bufferedReader = new BufferedReader(
+                    new FileReader(usersJSONfilename));
+            while ((line = bufferedReader.readLine()) != null) {
+                System.out.println(addUser(line));
+            }
+            bufferedReader.close();
+        } catch (Exception e) {
+            e.printStackTrace();
+        }
+
+        try {
+            BufferedReader bufferedReader = new BufferedReader(
+                    new FileReader(reviewsJSONfilename));
+            while ((line = bufferedReader.readLine()) != null) {
+                System.out.println(addReview(line));
+            }
+            bufferedReader.close();
+        } catch (Exception e) {
+            e.printStackTrace();
+        }
     }
 
     public Set<Restaurant> query(String queryString) {
@@ -49,11 +87,69 @@ public class RestaurantDB {
         return null;
     }
 
-    private Review randomReview(String restaurantName) {
+    /**
+     * returns a random review for the specified restaurant.
+     * 
+     * this method is threadsafe: while it's being checked whether or not the
+     * restaurant is in the database, the set of restaurants is locked. once
+     * it's been established that the restaurant is in the database, the
+     * restaurant and its associated reviews are locked.
+     * 
+     * @param restaurantName
+     *            a restaurant. Must be in the database, must have at least one
+     *            review.
+     * @return a random review of the specified restaurant.
+     */
+    public Review randomReview(String restaurantName) {
+        Restaurant specifiedRestaurant = null;
+
+        synchronized (restaurantMap) {
+            for (Entry<Restaurant, HashSet<Review>> entry : restaurantMap
+                    .entrySet()) {
+                if (entry.getKey() != null
+                        && entry.getKey().getName().equals(restaurantName)) {
+                    specifiedRestaurant = entry.getKey();
+                    break;
+                }
+            }
+        }
+
+        if (specifiedRestaurant == null)
+            return null;
+
+        synchronized (specifiedRestaurant) {
+            synchronized (restaurantMap.get(specifiedRestaurant)) {
+                int size = restaurantMap.get(specifiedRestaurant).size();
+                int rand = new Random().nextInt(size);
+                int i = 0;
+                for (Review rev : restaurantMap.get(specifiedRestaurant)) {
+                    if (i == rand)
+                        return rev;
+                    i++;
+                }
+            }
+        }
         return null;
     }
 
-    private Restaurant getRestaurant(String businessId) {
+    /**
+     * returns the restaurant in the database with the matching businessId
+     * 
+     * @param businessId
+     *            the ID of a restaurant. Must correspond to a restaurant in the
+     *            database.
+     * @return a restaurant with a business ID which matches businessId.
+     */
+    public Restaurant getRestaurant(String businessId) {
+        synchronized (restaurantMap) {
+            for (Entry<Restaurant, HashSet<Review>> entry : restaurantMap
+                    .entrySet()) {
+                if (entry.getKey() != null
+                        && entry.getKey().getBusinessId().equals(businessId)) {
+                    return entry.getKey();
+                }
+            }
+        }
         return null;
     }
 
@@ -62,9 +158,10 @@ public class RestaurantDB {
      * requires that restaurantDetails is properly formatted and the specified
      * restaurant isn't already in the database.
      * 
-     * this isn't currently threadsafe. In order to make it threadsafe, we'll
-     * have to make sure that if restaurants are being added, users and
-     * restaurants being added are the only other activities happening
+     * this is threadsafe: restaurantMap is the lock. Reviews cannot be added
+     * while this operation is running (although users can). Ideally, other
+     * restaurants would be able to be added simultaneously, but I can't figure
+     * out how to do that.
      * 
      * @param restaurantDetails
      *            a JSON-formatted string describing a restaurant
@@ -72,18 +169,20 @@ public class RestaurantDB {
      *         add the restaurant
      */
     private String addRestaurant(String restaurantDetails) {
-        try {
-            Restaurant toAdd = new Restaurant(restaurantDetails);
-            // TODO: refine this check
-            if (restaurantMap.containsKey(toAdd))
-                return "\"message\": \"the restaurant is already in the database.\"";
-            else {
-                restaurantMap.put(toAdd, Collections.emptySet());
-                return "\"message\": \"the restaurant was successfully added.\"";
+        synchronized (restaurantMap) {
+            try {
+                Restaurant toAdd = new Restaurant(restaurantDetails); // TODO: refine this check
+                if (restaurantMap.containsKey(toAdd))
+                    return "\"message\": \"the restaurant is already in the database.\"";
+                else {
+                    HashSet<Review> emptySet = new HashSet<Review>();
+                    restaurantMap.put(toAdd, emptySet);
+                    return "\"message\": \"the restaurant was successfully added.\"";
+                }
+            } catch (Exception e) { // this is meant to catch badly-formed
+                                    // restaurantDetails
+                return "\"message\": \"the restaurant is incorrectly formatted or otherwise invalid.\"";
             }
-        } catch (Exception e) { // this is meant to catch badly-formed
-                                // restaurantDetails
-            return "\"message\": \"the restaurant is incorrectly formatted or otherwise invalid.\"";
         }
     }
 
@@ -92,9 +191,10 @@ public class RestaurantDB {
      * that userDetails is properly formatted and the specified user isn't
      * already in the database.
      * 
-     * this isn't currently threadsafe. In order to make it threadsafe, we'll
-     * have to make sure that if users are being added, users and restaurants
-     * being added are the only other activities happening
+     * this is threadsafe: userMap is the lock. Reviews cannot be added while
+     * this operation is running (although restaurants can). Ideally, other
+     * users would be able to be added simultaneously, but I can't figure out
+     * how to do that.
      * 
      * @param userDetails
      *            a JSON-formatted string describing a user
@@ -102,18 +202,20 @@ public class RestaurantDB {
      *         add the user
      */
     private String addUser(String userDetails) {
-        try {
-            User toAdd = new User(userDetails);
-            if (userMap.containsKey(toAdd)) // TODO: refine this check
-                return "\"message\": \"the user is already in the database.\"";
-            else {
-
-                userMap.put(toAdd, Collections.emptySet());
-                return "\"message\": \"the user was successfully added.\"";
+        synchronized (userMap) {
+            try {
+                User toAdd = new User(userDetails);
+                if (userMap.containsKey(toAdd)) // TODO: refine this check
+                    return "\"message\": \"the user is already in the database.\"";
+                else {
+                    HashSet<Review> emptySet = new HashSet<Review>();
+                    userMap.put(toAdd, emptySet);
+                    return "\"message\": \"the user was successfully added.\"";
+                }
+            } catch (Exception e) { // this is meant to catch badly-formed
+                                    // userDetails
+                return "\"message\": \"the user is incorrectly formatted or otherwise invalid.\"";
             }
-        } catch (Exception e) { // this is meant to catch badly-formed
-                                // userDetails
-            return "\"message\": \"the user is incorrectly formatted or otherwise invalid.\"";
         }
     }
 
@@ -122,14 +224,20 @@ public class RestaurantDB {
      * the review isn't already in the database, and that the user who wrote the
      * review and the restaurant the review is about are in the database.
      * 
-     * * this isn't currently threadsafe. In order to make it threadsafe, we'll
-     * have to make sure that only one review is being added to a user at a time
-     * and that users and restaurants aren't being added to the database
+     * this is threadsafe. There are four stages which require safety: first,
+     * the restaurant associated with the review is searched for. In this step,
+     * restaurantMap is locked: no changes can be made to the map while it is
+     * being searched. Second, the user associated with the review is searched
+     * for. In this step, userMap is locked: no changes can be made to the map
+     * while it is being searched. Third, the review is added to the restaurant:
+     * the locks required are the restaurant and its set of reviews. Finally,
+     * the review is added to the user: the locks required are the user and
+     * their set of reviews.
      * 
      * @param reviewDetails
      *            a JSON-formatted string describing a review
-     * @returna JSON-formatted string describing the result of the attempt to
-     *          add the review
+     * @return JSON-formatted string describing the result of the attempt to add
+     *         the review
      */
     private String addReview(String reviewDetails) {
         Review toAdd = new Review(reviewDetails);
@@ -138,48 +246,59 @@ public class RestaurantDB {
         String businessId = toAdd.getBusinessId();
 
         User reviewUser = null;
-        Set<Review> userReviews = null;
-
-        for (Map.Entry<User, Set<Review>> entry : userMap.entrySet()) {
-            if (entry.getKey() != null
-                    && entry.getKey().getUserId() == userId) {
-                reviewUser = entry.getKey();
-                userReviews = entry.getValue();
-                if (userReviews.contains(toAdd))
-                    return "\"message\": \"this review already exists in the database.\"";
-                break;
-            }
-        }
-        if (reviewUser == null)
-            return "\"message\": \"the user who wrote this review is not in the database.\"";
+        HashSet<Review> userReviews = null;
 
         Restaurant reviewRestaurant = null;
-        Set<Review> restaurantReviews = null;
+        HashSet<Review> restaurantReviews = null;
 
-        for (Map.Entry<Restaurant, Set<Review>> entry : restaurantMap
-                .entrySet()) {
-            if (entry.getKey() != null
-                    && entry.getKey().getBusinessId() == businessId) {
-                reviewRestaurant = entry.getKey();
-                restaurantReviews = entry.getValue();
-                if (restaurantReviews.contains(toAdd))
-                    return "\"message\": \"this review already exists in the database.\"";
-                break;
+        synchronized (restaurantMap) {
+            for (Entry<Restaurant, HashSet<Review>> entry : restaurantMap
+                    .entrySet()) {
+                if (entry.getKey() != null
+                        && entry.getKey().getBusinessId().equals(businessId)) {
+                    reviewRestaurant = entry.getKey();
+                    restaurantReviews = entry.getValue();
+                    if (restaurantReviews.contains(toAdd))
+                        return "\"message\": \"this review already exists in the database.\"";
+                    break;
+                }
             }
         }
         if (reviewRestaurant == null)
             return "\"message\": \"the restaurant this review is about is not in the database.\"";
 
-        userReviews.add(toAdd);
-        userMap.remove(reviewUser);
-        reviewUser.addReview(toAdd);
-        userMap.put(reviewUser, userReviews);
+        synchronized (userMap) {
+            for (Entry<User, HashSet<Review>> entry : userMap.entrySet()) {
+                if (entry.getKey() != null
+                        && entry.getKey().getUserId().equals(userId)) {
+                    reviewUser = entry.getKey();
+                    userReviews = entry.getValue();
+                    if (userReviews.contains(toAdd))
+                        return "\"message\": \"this review already exists in the database.\"";
+                    break;
+                }
+            }
+        }
+        if (reviewUser == null)
+            return "\"message\": \"the user who wrote this review is not in the database.\"";
 
-        restaurantReviews.add(toAdd);
-        restaurantMap.remove(reviewRestaurant);
-        reviewRestaurant.addReview(toAdd);
-        restaurantMap.put(reviewRestaurant, restaurantReviews);
+        synchronized (reviewRestaurant) {
+            synchronized (restaurantMap.get(reviewRestaurant)) {
+                restaurantReviews.add(toAdd);
+                restaurantMap.remove(reviewRestaurant);
+                reviewRestaurant.addReview(toAdd);
+                restaurantMap.put(reviewRestaurant, restaurantReviews);
+            }
+        }
 
-        return "\"message\": \"the restaurant this review is about is not in the database.\"";
+        synchronized (reviewUser) {
+            synchronized (userMap.get(reviewUser)) {
+                userReviews.add(toAdd);
+                userMap.remove(reviewUser);
+                reviewUser.addReview(toAdd);
+                userMap.put(reviewUser, userReviews);
+            }
+        }
+        return "\"message\": \"the review was added successfully.\"";
     }
 }

@@ -20,11 +20,12 @@ public class RestaurantDBServer {
      * @param users
      */
     
-	public RestaurantDBServer(int port, String restaurants, String reviews, String useres) {
+	public RestaurantDBServer(int port, String restaurants, String reviews, String users) {
 		// TODO: See the problem statement for what the arguments are.
-		// TODO: Rename the arguments suitably.
 	    
 	    // call restaurantDB and create a database
+	    
+	    database = new RestaurantDB(restaurants, reviews, users);
 	    
 	    // queries get shoved into a queue (linked list?) by producers
 	    // queries are removed and processed one-by-one by consumers
