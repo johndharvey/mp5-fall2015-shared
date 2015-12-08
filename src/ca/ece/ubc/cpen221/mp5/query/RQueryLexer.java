@@ -1,6 +1,6 @@
-// Generated from src/ca/ece/ubc/cpen221/mp5/query/Query.g4 by ANTLR 4.4
+// Generated from src/ca/ece/ubc/cpen221/mp5/query/RQuery.g4 by ANTLR 4.4
 
-package formula;
+package ca.ece.ubc.cpen221.mp5.query;
 
 import org.antlr.v4.runtime.Lexer;
 import org.antlr.v4.runtime.CharStream;
@@ -12,7 +12,7 @@ import org.antlr.v4.runtime.dfa.DFA;
 import org.antlr.v4.runtime.misc.*;
 
 @SuppressWarnings({"all", "warnings", "unchecked", "unused", "cast"})
-public class QueryLexer extends Lexer {
+public class RQueryLexer extends Lexer {
 	static { RuntimeMetaData.checkVersion("4.4", RuntimeMetaData.VERSION); }
 
 	protected static final DFA[] _decisionToDFA;
@@ -54,13 +54,13 @@ public class QueryLexer extends Lexer {
 	    }
 
 
-	public QueryLexer(CharStream input) {
+	public RQueryLexer(CharStream input) {
 		super(input);
 		_interp = new LexerATNSimulator(this,_ATN,_decisionToDFA,_sharedContextCache);
 	}
 
 	@Override
-	public String getGrammarFileName() { return "Query.g4"; }
+	public String getGrammarFileName() { return "RQuery.g4"; }
 
 	@Override
 	public String[] getTokenNames() { return tokenNames; }

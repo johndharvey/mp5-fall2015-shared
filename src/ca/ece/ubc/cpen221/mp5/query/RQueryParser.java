@@ -1,6 +1,6 @@
-// Generated from src/ca/ece/ubc/cpen221/mp5/query/Query.g4 by ANTLR 4.4
+// Generated from src/ca/ece/ubc/cpen221/mp5/query/RQuery.g4 by ANTLR 4.4
 
-package formula;
+package ca.ece.ubc.cpen221.mp5.query;
 
 import org.antlr.v4.runtime.atn.*;
 import org.antlr.v4.runtime.dfa.DFA;
@@ -12,7 +12,7 @@ import java.util.Iterator;
 import java.util.ArrayList;
 
 @SuppressWarnings({"all", "warnings", "unchecked", "unused", "cast"})
-public class QueryParser extends Parser {
+public class RQueryParser extends Parser {
 	static { RuntimeMetaData.checkVersion("4.4", RuntimeMetaData.VERSION); }
 
 	protected static final DFA[] _decisionToDFA;
@@ -34,7 +34,7 @@ public class QueryParser extends Parser {
 	};
 
 	@Override
-	public String getGrammarFileName() { return "Query.g4"; }
+	public String getGrammarFileName() { return "RQuery.g4"; }
 
 	@Override
 	public String[] getTokenNames() { return tokenNames; }
@@ -66,7 +66,7 @@ public class QueryParser extends Parser {
 	        }
 	    }
 
-	public QueryParser(TokenStream input) {
+	public RQueryParser(TokenStream input) {
 		super(input);
 		_interp = new ParserATNSimulator(this,_ATN,_decisionToDFA,_sharedContextCache);
 	}
@@ -74,18 +74,18 @@ public class QueryParser extends Parser {
 		public ExprContext expr() {
 			return getRuleContext(ExprContext.class,0);
 		}
-		public TerminalNode EOF() { return getToken(QueryParser.EOF, 0); }
+		public TerminalNode EOF() { return getToken(RQueryParser.EOF, 0); }
 		public QueryContext(ParserRuleContext parent, int invokingState) {
 			super(parent, invokingState);
 		}
 		@Override public int getRuleIndex() { return RULE_query; }
 		@Override
 		public void enterRule(ParseTreeListener listener) {
-			if ( listener instanceof QueryListener ) ((QueryListener)listener).enterQuery(this);
+			if ( listener instanceof RQueryListener ) ((RQueryListener)listener).enterQuery(this);
 		}
 		@Override
 		public void exitRule(ParseTreeListener listener) {
-			if ( listener instanceof QueryListener ) ((QueryListener)listener).exitQuery(this);
+			if ( listener instanceof RQueryListener ) ((RQueryListener)listener).exitQuery(this);
 		}
 	}
 
@@ -123,11 +123,11 @@ public class QueryParser extends Parser {
 		@Override public int getRuleIndex() { return RULE_expr; }
 		@Override
 		public void enterRule(ParseTreeListener listener) {
-			if ( listener instanceof QueryListener ) ((QueryListener)listener).enterExpr(this);
+			if ( listener instanceof RQueryListener ) ((RQueryListener)listener).enterExpr(this);
 		}
 		@Override
 		public void exitRule(ParseTreeListener listener) {
-			if ( listener instanceof QueryListener ) ((QueryListener)listener).exitExpr(this);
+			if ( listener instanceof RQueryListener ) ((RQueryListener)listener).exitExpr(this);
 		}
 	}
 
@@ -166,12 +166,12 @@ public class QueryParser extends Parser {
 		public AndexprContext andexpr(int i) {
 			return getRuleContext(AndexprContext.class,i);
 		}
-		public List<TerminalNode> OR() { return getTokens(QueryParser.OR); }
+		public List<TerminalNode> OR() { return getTokens(RQueryParser.OR); }
 		public List<AndexprContext> andexpr() {
 			return getRuleContexts(AndexprContext.class);
 		}
 		public TerminalNode OR(int i) {
-			return getToken(QueryParser.OR, i);
+			return getToken(RQueryParser.OR, i);
 		}
 		public OrexprContext(ParserRuleContext parent, int invokingState) {
 			super(parent, invokingState);
@@ -179,11 +179,11 @@ public class QueryParser extends Parser {
 		@Override public int getRuleIndex() { return RULE_orexpr; }
 		@Override
 		public void enterRule(ParseTreeListener listener) {
-			if ( listener instanceof QueryListener ) ((QueryListener)listener).enterOrexpr(this);
+			if ( listener instanceof RQueryListener ) ((RQueryListener)listener).enterOrexpr(this);
 		}
 		@Override
 		public void exitRule(ParseTreeListener listener) {
-			if ( listener instanceof QueryListener ) ((QueryListener)listener).exitOrexpr(this);
+			if ( listener instanceof RQueryListener ) ((RQueryListener)listener).exitOrexpr(this);
 		}
 	}
 
@@ -226,7 +226,7 @@ public class QueryParser extends Parser {
 		public AtomContext atom(int i) {
 			return getRuleContext(AtomContext.class,i);
 		}
-		public TerminalNode AND() { return getToken(QueryParser.AND, 0); }
+		public TerminalNode AND() { return getToken(RQueryParser.AND, 0); }
 		public List<AtomContext> atom() {
 			return getRuleContexts(AtomContext.class);
 		}
@@ -236,11 +236,11 @@ public class QueryParser extends Parser {
 		@Override public int getRuleIndex() { return RULE_andexpr; }
 		@Override
 		public void enterRule(ParseTreeListener listener) {
-			if ( listener instanceof QueryListener ) ((QueryListener)listener).enterAndexpr(this);
+			if ( listener instanceof RQueryListener ) ((RQueryListener)listener).enterAndexpr(this);
 		}
 		@Override
 		public void exitRule(ParseTreeListener listener) {
-			if ( listener instanceof QueryListener ) ((QueryListener)listener).exitAndexpr(this);
+			if ( listener instanceof RQueryListener ) ((RQueryListener)listener).exitAndexpr(this);
 		}
 	}
 
@@ -283,7 +283,7 @@ public class QueryParser extends Parser {
 		public InContext in() {
 			return getRuleContext(InContext.class,0);
 		}
-		public TerminalNode LPAREN() { return getToken(QueryParser.LPAREN, 0); }
+		public TerminalNode LPAREN() { return getToken(RQueryParser.LPAREN, 0); }
 		public PriceContext price() {
 			return getRuleContext(PriceContext.class,0);
 		}
@@ -293,7 +293,7 @@ public class QueryParser extends Parser {
 		public NameContext name() {
 			return getRuleContext(NameContext.class,0);
 		}
-		public TerminalNode RPAREN() { return getToken(QueryParser.RPAREN, 0); }
+		public TerminalNode RPAREN() { return getToken(RQueryParser.RPAREN, 0); }
 		public RatingContext rating() {
 			return getRuleContext(RatingContext.class,0);
 		}
@@ -306,11 +306,11 @@ public class QueryParser extends Parser {
 		@Override public int getRuleIndex() { return RULE_atom; }
 		@Override
 		public void enterRule(ParseTreeListener listener) {
-			if ( listener instanceof QueryListener ) ((QueryListener)listener).enterAtom(this);
+			if ( listener instanceof RQueryListener ) ((RQueryListener)listener).enterAtom(this);
 		}
 		@Override
 		public void exitRule(ParseTreeListener listener) {
-			if ( listener instanceof QueryListener ) ((QueryListener)listener).exitAtom(this);
+			if ( listener instanceof RQueryListener ) ((RQueryListener)listener).exitAtom(this);
 		}
 	}
 
@@ -376,21 +376,21 @@ public class QueryParser extends Parser {
 	}
 
 	public static class InContext extends ParserRuleContext {
-		public TerminalNode STR() { return getToken(QueryParser.STR, 0); }
-		public TerminalNode LPAREN() { return getToken(QueryParser.LPAREN, 0); }
-		public TerminalNode RPAREN() { return getToken(QueryParser.RPAREN, 0); }
-		public TerminalNode IN() { return getToken(QueryParser.IN, 0); }
+		public TerminalNode STR() { return getToken(RQueryParser.STR, 0); }
+		public TerminalNode LPAREN() { return getToken(RQueryParser.LPAREN, 0); }
+		public TerminalNode RPAREN() { return getToken(RQueryParser.RPAREN, 0); }
+		public TerminalNode IN() { return getToken(RQueryParser.IN, 0); }
 		public InContext(ParserRuleContext parent, int invokingState) {
 			super(parent, invokingState);
 		}
 		@Override public int getRuleIndex() { return RULE_in; }
 		@Override
 		public void enterRule(ParseTreeListener listener) {
-			if ( listener instanceof QueryListener ) ((QueryListener)listener).enterIn(this);
+			if ( listener instanceof RQueryListener ) ((RQueryListener)listener).enterIn(this);
 		}
 		@Override
 		public void exitRule(ParseTreeListener listener) {
-			if ( listener instanceof QueryListener ) ((QueryListener)listener).exitIn(this);
+			if ( listener instanceof RQueryListener ) ((RQueryListener)listener).exitIn(this);
 		}
 	}
 
@@ -418,21 +418,21 @@ public class QueryParser extends Parser {
 	}
 
 	public static class CategoryContext extends ParserRuleContext {
-		public TerminalNode STR() { return getToken(QueryParser.STR, 0); }
-		public TerminalNode LPAREN() { return getToken(QueryParser.LPAREN, 0); }
-		public TerminalNode RPAREN() { return getToken(QueryParser.RPAREN, 0); }
-		public TerminalNode CAT() { return getToken(QueryParser.CAT, 0); }
+		public TerminalNode STR() { return getToken(RQueryParser.STR, 0); }
+		public TerminalNode LPAREN() { return getToken(RQueryParser.LPAREN, 0); }
+		public TerminalNode RPAREN() { return getToken(RQueryParser.RPAREN, 0); }
+		public TerminalNode CAT() { return getToken(RQueryParser.CAT, 0); }
 		public CategoryContext(ParserRuleContext parent, int invokingState) {
 			super(parent, invokingState);
 		}
 		@Override public int getRuleIndex() { return RULE_category; }
 		@Override
 		public void enterRule(ParseTreeListener listener) {
-			if ( listener instanceof QueryListener ) ((QueryListener)listener).enterCategory(this);
+			if ( listener instanceof RQueryListener ) ((RQueryListener)listener).enterCategory(this);
 		}
 		@Override
 		public void exitRule(ParseTreeListener listener) {
-			if ( listener instanceof QueryListener ) ((QueryListener)listener).exitCategory(this);
+			if ( listener instanceof RQueryListener ) ((RQueryListener)listener).exitCategory(this);
 		}
 	}
 
@@ -460,21 +460,21 @@ public class QueryParser extends Parser {
 	}
 
 	public static class NameContext extends ParserRuleContext {
-		public TerminalNode STR() { return getToken(QueryParser.STR, 0); }
-		public TerminalNode NAME() { return getToken(QueryParser.NAME, 0); }
-		public TerminalNode LPAREN() { return getToken(QueryParser.LPAREN, 0); }
-		public TerminalNode RPAREN() { return getToken(QueryParser.RPAREN, 0); }
+		public TerminalNode STR() { return getToken(RQueryParser.STR, 0); }
+		public TerminalNode NAME() { return getToken(RQueryParser.NAME, 0); }
+		public TerminalNode LPAREN() { return getToken(RQueryParser.LPAREN, 0); }
+		public TerminalNode RPAREN() { return getToken(RQueryParser.RPAREN, 0); }
 		public NameContext(ParserRuleContext parent, int invokingState) {
 			super(parent, invokingState);
 		}
 		@Override public int getRuleIndex() { return RULE_name; }
 		@Override
 		public void enterRule(ParseTreeListener listener) {
-			if ( listener instanceof QueryListener ) ((QueryListener)listener).enterName(this);
+			if ( listener instanceof RQueryListener ) ((RQueryListener)listener).enterName(this);
 		}
 		@Override
 		public void exitRule(ParseTreeListener listener) {
-			if ( listener instanceof QueryListener ) ((QueryListener)listener).exitName(this);
+			if ( listener instanceof RQueryListener ) ((RQueryListener)listener).exitName(this);
 		}
 	}
 
@@ -502,21 +502,21 @@ public class QueryParser extends Parser {
 	}
 
 	public static class RatingContext extends ParserRuleContext {
-		public TerminalNode RAT() { return getToken(QueryParser.RAT, 0); }
-		public TerminalNode RANGE() { return getToken(QueryParser.RANGE, 0); }
-		public TerminalNode LPAREN() { return getToken(QueryParser.LPAREN, 0); }
-		public TerminalNode RPAREN() { return getToken(QueryParser.RPAREN, 0); }
+		public TerminalNode RAT() { return getToken(RQueryParser.RAT, 0); }
+		public TerminalNode RANGE() { return getToken(RQueryParser.RANGE, 0); }
+		public TerminalNode LPAREN() { return getToken(RQueryParser.LPAREN, 0); }
+		public TerminalNode RPAREN() { return getToken(RQueryParser.RPAREN, 0); }
 		public RatingContext(ParserRuleContext parent, int invokingState) {
 			super(parent, invokingState);
 		}
 		@Override public int getRuleIndex() { return RULE_rating; }
 		@Override
 		public void enterRule(ParseTreeListener listener) {
-			if ( listener instanceof QueryListener ) ((QueryListener)listener).enterRating(this);
+			if ( listener instanceof RQueryListener ) ((RQueryListener)listener).enterRating(this);
 		}
 		@Override
 		public void exitRule(ParseTreeListener listener) {
-			if ( listener instanceof QueryListener ) ((QueryListener)listener).exitRating(this);
+			if ( listener instanceof RQueryListener ) ((RQueryListener)listener).exitRating(this);
 		}
 	}
 
@@ -544,21 +544,21 @@ public class QueryParser extends Parser {
 	}
 
 	public static class PriceContext extends ParserRuleContext {
-		public TerminalNode PR() { return getToken(QueryParser.PR, 0); }
-		public TerminalNode RANGE() { return getToken(QueryParser.RANGE, 0); }
-		public TerminalNode LPAREN() { return getToken(QueryParser.LPAREN, 0); }
-		public TerminalNode RPAREN() { return getToken(QueryParser.RPAREN, 0); }
+		public TerminalNode PR() { return getToken(RQueryParser.PR, 0); }
+		public TerminalNode RANGE() { return getToken(RQueryParser.RANGE, 0); }
+		public TerminalNode LPAREN() { return getToken(RQueryParser.LPAREN, 0); }
+		public TerminalNode RPAREN() { return getToken(RQueryParser.RPAREN, 0); }
 		public PriceContext(ParserRuleContext parent, int invokingState) {
 			super(parent, invokingState);
 		}
 		@Override public int getRuleIndex() { return RULE_price; }
 		@Override
 		public void enterRule(ParseTreeListener listener) {
-			if ( listener instanceof QueryListener ) ((QueryListener)listener).enterPrice(this);
+			if ( listener instanceof RQueryListener ) ((RQueryListener)listener).enterPrice(this);
 		}
 		@Override
 		public void exitRule(ParseTreeListener listener) {
-			if ( listener instanceof QueryListener ) ((QueryListener)listener).exitPrice(this);
+			if ( listener instanceof RQueryListener ) ((RQueryListener)listener).exitPrice(this);
 		}
 	}
 

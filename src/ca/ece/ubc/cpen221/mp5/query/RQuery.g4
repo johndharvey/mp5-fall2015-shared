@@ -1,4 +1,4 @@
-grammar Query;
+grammar RQuery;
 
 // This puts "package formula;" at the top of the output Java files.
 @header {
