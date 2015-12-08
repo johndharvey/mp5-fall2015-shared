@@ -1,4 +1,4 @@
-grammar Formula;
+grammar Query;
 
 // This puts "package formula;" at the top of the output Java files.
 @header {
@@ -30,25 +30,53 @@ package formula;
  *   *** Antlr requires tokens to be CAPITALIZED, like START_ITALIC, END_ITALIC, and TEXT.
  */
  
-TRUE : 'T' | 'true';
+AND : '&&' ;
 
-FALSE : 'F' | 'false';
-
-AND : '&';
-
-NOT : '!';
+OR : '||' ;
 
 WHITESPACE : [ \t\r\n]+ -> skip ;
+
+LPAREN : '(' ;
+
+RPAREN : ')' ;
+
+IN : 'in' ;
+
+CAT : 'category' ;
+
+RAT : 'rating' ;
+
+PR : 'price' ;
+
+NAME : 'name' ;
+
+STR: ('a'..'z' | 'A'..'Z')+ ;
+
+DIGIT : '1'..'5' ;
+
+RANGE : DIGIT '..' DIGIT ;
 
 /*
  * These are the parser rules. They define the structures used by the parser.
  *    *** Antlr requires grammar nonterminals to be lowercase, like html, normal, and italic.
  */
- 
-formula : conjunction EOF ;
 
-conjunction: conjunction AND conjunction | term ;
+query: expr EOF ;
 
-term : literal | NOT literal ;
+expr: andexpr | orexpr ;
 
-literal : TRUE | FALSE ;
+orexpr: andexpr (OR andexpr)* ;
+
+andexpr: atom AND atom* ;
+
+atom: in | category | rating | price | name | (LPAREN orexpr RPAREN) ;
+
+in : IN LPAREN STR RPAREN ;
+
+category : CAT LPAREN STR RPAREN ;
+
+name : NAME LPAREN STR RPAREN ;
+
+rating : RAT LPAREN RANGE RPAREN ;
+
+price : PR LPAREN RANGE RPAREN ;
