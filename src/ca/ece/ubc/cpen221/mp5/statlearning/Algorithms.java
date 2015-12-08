@@ -3,6 +3,7 @@ package ca.ece.ubc.cpen221.mp5.statlearning;
 import java.util.Set;
 import java.util.List;
 import ca.ece.ubc.cpen221.mp5.*;
+import ca.ece.ubc.cpen221.mp5.statlearning.FeatureFunction;
 
 public class Algorithms {
 
@@ -24,7 +25,11 @@ public class Algorithms {
 	}
 
 	public static MP5Function getPredictor(User u, RestaurantDB db, MP5Function featureFunction) {
-		// TODO: Implement this method
+	    
+	    String feature = ((FeatureFunction)featureFunction).getFeature();
+	    List<Double> x;
+	    List<Double> y;
+	    
 		return null;
 	}
 
