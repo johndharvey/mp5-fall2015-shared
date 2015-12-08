@@ -50,7 +50,7 @@ PR : 'price' ;
 
 NAME : 'name' ;
 
-STR: ('a'..'z' | 'A'..'Z')+ ;
+STR: ('a'..'z' | 'A'..'Z' | '.')+ ;
 
 DIGIT : '1'..'5' ;
 
