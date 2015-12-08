@@ -33,7 +33,7 @@ public class RQueryFactory {
         ParseTree tree = parser.query(); // "root" is the starter rule.
 
         // debugging option #1: print the tree to the console
-        // System.err.println(tree.toStringTree(parser));
+        System.err.println(tree.toStringTree(parser));
 
         // debugging option #2: show the tree in a window
         // ((RuleContext)tree).inspect(parser);

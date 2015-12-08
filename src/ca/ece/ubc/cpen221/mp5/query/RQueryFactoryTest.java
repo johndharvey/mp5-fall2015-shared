@@ -7,7 +7,8 @@ public class RQueryFactoryTest {
 
     @Test
     public void test1() {
-        assert(true);
+        RQuery test = RQueryFactory.parse("category(Italian)");
+        assertTrue(test.containsCategory("Italian"));
     }
 
 }

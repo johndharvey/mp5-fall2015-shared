@@ -87,13 +87,75 @@ public class RQuery {
     }
 
     /**
+     * Returns whether or not the passed location string is contained in the
+     * query.
      * 
      * @param location
-     *            the location 
+     *            the location to be possibly located in the query
      * @return true if the query contains location, false otherwise
      */
     public boolean containsLocation(String location) {
         if (locations.contains(location))
+            return true;
+        else
+            return false;
+    }
+    
+    /**
+     * Returns whether or not the passed category string is contained in the
+     * query.
+     * 
+     * @param category
+     *            the category to be possibly located in the query
+     * @return true if the query contains category, false otherwise
+     */
+    public boolean containsCategory(String category) {
+        if (categories.contains(category))
+            return true;
+        else
+            return false;
+    }
+    
+    /**
+     * Returns whether or not the passed name string is contained in the
+     * query.
+     * 
+     * @param name
+     *            the name to be possibly located in the query
+     * @return true if the query contains name, false otherwise
+     */
+    public boolean containsName(String name) {
+        if (names.contains(name))
+            return true;
+        else
+            return false;
+    }
+    
+    /**
+     * Returns whether or not the passed rating Integer is contained in the
+     * query.
+     * 
+     * @param rating
+     *            the rating to be possibly located in the query
+     * @return true if the query contains rating, false otherwise
+     */
+    public boolean containsRating(Integer rating) {
+        if (ratings.contains(rating))
+            return true;
+        else
+            return false;
+    }
+    
+    /**
+     * Returns whether or not the passed price Integer is contained in the
+     * query.
+     * 
+     * @param price
+     *            the price to be possibly located in the query
+     * @return true if the query contains price, false otherwise
+     */
+    public boolean containsPrice(Integer price) {
+        if (prices.contains(price))
             return true;
         else
             return false;
